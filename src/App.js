@@ -1,23 +1,29 @@
-import logo from './logo.svg';
-import './App.css';
-
+import "./App.css";
+import { useState, useEffect } from "react";
 function App() {
+  const [counter, setCounter] = useState(1);
+  const [nombre, setNombre] = useState("");
+  const increase = () => {
+    setCounter(counter + 1);
+  };
+  const decrease = () => {
+    setCounter(counter - 1);
+  };
+  const callData = () => {
+    fetch("https://swapi.dev/api/people/" + counter)
+      .then((data) => data.json())
+      .then((res) => setNombre(() => res.name));
+  };
+  useEffect(() => {
+    callData();
+  }, [counter]);
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <p>
+        {counter} {nombre}
+      </p>
+      <button onClick={increase}>Increase</button>
+      <button onClick={decrease}>Decrease</button>
     </div>
   );
 }
